@@ -4,53 +4,54 @@ import axios from 'axios';
 import "components/Application.scss";
 import DayList from "components/DayList.js";
 import Appointment from "components/Appointment";
+import { getAppointmentsForDay, getInterview } from "../helpers/selectors"
 
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-    interview: {
-      student: "suzy",
-      interviewer: {
-        id: 2,
-        name: "Tori Malcolm",
-        avatar: "https://i.imgur.com/Nmx0Qxo.png"
-      }
-    }
-  },
-  {
-    id: 4,
-    time: "3pm",
-  },
-  {
-    id: 5,
-    time: "4pm",
-    interview: {
-      student: "bob",
-      interviewer: {
-        id: 5,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg"
-      }
-    }
-  }
-];
+// const appointments1 = [
+//   {
+//     id: 1,
+//     time: "12pm",
+//   },
+//   {
+//     id: 2,
+//     time: "1pm",
+//     interview: {
+//       student: "Lydia Miller-Jones",
+//       interviewer: {
+//         id: 1,
+//         name: "Sylvia Palmer",
+//         avatar: "https://i.imgur.com/LpaY82x.png",
+//       }
+//     }
+//   },
+//   {
+//     id: 3,
+//     time: "2pm",
+//     interview: {
+//       student: "suzy",
+//       interviewer: {
+//         id: 2,
+//         name: "Tori Malcolm",
+//         avatar: "https://i.imgur.com/Nmx0Qxo.png"
+//       }
+//     }
+//   },
+//   {
+//     id: 4,
+//     time: "3pm",
+//   },
+//   {
+//     id: 5,
+//     time: "4pm",
+//     interview: {
+//       student: "bob",
+//       interviewer: {
+//         id: 5,
+//         name: "Sven Jones",
+//         avatar: "https://i.imgur.com/twYrpay.jpg"
+//       }
+//     }
+//   }
+// ];
 
 // const days = [
 //   {
@@ -71,15 +72,40 @@ const appointments = [
 // ];
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+    interviewers: {}
+  })
 
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const schedule = dailyAppointments.map((appointment, index) => {
+    const interview = getInterview(state, appointment.interview)
+    return index !== appointment.length - 1 ?
+      <Appointment
+        key={appointment.id}
+        {...appointment}
+        interview={interview}
+      /> : <Appointment key="last" time="5pm" />
+  })
+
+  const setDay = day => setState({ ...state, day });
+  // const setDays = days => setState((prev) => ({ ...prev, days }));
+
+  //get days data
   useEffect(() => {
-    axios.get('/api/days').then(response => {
-      // console.log("response.data", response.data);
-      setDays([...response.data])
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('api/interviewers')
+    ]).then((all) => {
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     })
   }, [])
+
+
+
 
   return (
     <main className="layout">
@@ -92,8 +118,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            day={day}
+            days={state.days}
+            day={state.day}
             setDay={setDay}
           />
         </nav>
@@ -103,24 +129,10 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />      </section>
       <section className="schedule">
-        {appointments.map((appointment, index) => {
-          console.log();
-          return index !== appointment.length - 1 ?
-            <Appointment
-              key={appointment.id}
-              {...appointment}
-            // time={appointment.time}
-            // interview={appointment.interview && {
-            //   student: appointment.interview.student,
-            //   interviewer: {
-            //     id: appointment.interview.interviewer.id,
-            //     name: appointment.interview.interviewer.name,
-            //     avatar: appointment.interview.interviewer.avatar
-            //   }
-            // }}
-            /> : <Appointment key="last" time="7pm" />
-        })}
+        {schedule}
       </section>
     </main>
   );
 }
+
+// Empty - Create - Saving
