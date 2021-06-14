@@ -1,3 +1,19 @@
+export function getInterviewersForDay(state, day) {
+  //find object in state.days that matches day
+  const dayObj = state.days.filter(currentDay => currentDay.name === day)[0]
+
+  //iterate through that day's appointments array (using id)
+  const interviewers = dayObj && dayObj.interviewers.map(interviewerID => state.interviewers[interviewerID]);
+
+  //validation: if there  are no appointments then return empty array
+  if (!interviewers) {
+    return [];
+  }
+
+  return interviewers;
+}
+
+
 export function getAppointmentsForDay(state, day) {
   //find object in state.days that matches day
   const dayObj = state.days.filter(currentDay => currentDay.name === day)[0]
@@ -17,7 +33,7 @@ export function getInterview(state, interviewObj) {
   if (!interviewObj) {
     return null;
   }
-  console.log("interviewObj", interviewObj);
+  // console.log("interviewObj", interviewObj);
 
   const detailedInterviewObj = {
     ...interviewObj,
@@ -27,6 +43,6 @@ export function getInterview(state, interviewObj) {
       avatar: state.interviewers[interviewObj.interviewer].avatar
     }
   }
-  console.log('detailedInterviewObj', detailedInterviewObj);
+  // console.log('detailedInterviewObj', detailedInterviewObj);
   return detailedInterviewObj;
 }

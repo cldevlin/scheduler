@@ -4,7 +4,7 @@ import axios from 'axios';
 import "components/Application.scss";
 import DayList from "components/DayList.js";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "../helpers/selectors"
+import { getInterviewersForDay, getAppointmentsForDay, getInterview } from "../helpers/selectors"
 
 // const appointments1 = [
 //   {
@@ -79,16 +79,75 @@ export default function Application(props) {
     interviewers: {}
   })
 
+  function bookInterview(id, interview) {
+    // console.log("(id, interview)", id, interview); //appointment id, interview object( student and interviewer id)
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    // const bookInterviewPromise = appointment && 
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(result => {
+        // console.log("result", result);
+        setState({ ...state, appointments })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+    // return bookInterviewPromise;
+    // console.log("state, line 92 ----", state);
+  }
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    console.log("appointment id", id);
+    console.log(state);
+    console.log("appointments", appointments);
+    console.log("appointment", appointment);
+    // WHY DOESN"T THIS WORK WTRHW%^Y$%WU&$^&$TKTHLRHKTRLITJWR:BJSFLKGHLSFKGH"QERL"W:%L:Y$:%:
+    const putPromise = axios.delete(`/api/appointments/${id}`, {})
+      .then(result => {
+        console.log(result);
+        console.log("line 117");
+        setState({ ...state, appointments })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    console.log(putPromise);
+    return putPromise;
+  }
+
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const schedule = dailyAppointments.map((appointment, index) => {
     const interview = getInterview(state, appointment.interview)
-    return index !== appointment.length - 1 ?
+    return (
       <Appointment
         key={appointment.id}
         {...appointment}
         interview={interview}
-      /> : <Appointment key="last" time="5pm" />
+        interviewers={getInterviewersForDay(state, state.day)}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
+      />)
   })
+  schedule.push(<Appointment key="last" time="5pm" />)
+
+  // const dailyInterviewers = getInterviewersForDay(state, state.day);
+
+  // console.log("dailyInterviewers--------", dailyInterviewers);
 
   const setDay = day => setState({ ...state, day });
   // const setDays = days => setState((prev) => ({ ...prev, days }));
