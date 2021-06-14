@@ -32,8 +32,8 @@ export default function Form(props) {
             value={name}
             onChange={(event) => setName(event.target.value)} // <-----------------------------------
           /*
-            This must be a controlled component
-          */
+          This must be a controlled component
+        */
           />
         </form>
         <InterviewerList interviewers={props.interviewers} value={interviewer} onChange={setInterviewer} />

@@ -9,8 +9,8 @@ export default function useVisualMode(initialMode) {
     // console.log("-------------");
     // console.log("old mode", mode);
     replace ?
-      setHistory([...[...history].slice(0, -1), newMode]) :
-      setHistory([...history, newMode]);
+      setHistory(prev => [...[...prev].slice(0, -1), newMode]) :
+      setHistory(prev => [...prev, newMode]);
     // console.log("history", history);
     setMode(newMode);
     // console.log("newMod", newMode);
