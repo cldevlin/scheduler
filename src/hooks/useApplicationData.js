@@ -66,7 +66,6 @@ export default function useApplicationData() {
 
     const putPromise = axios.delete(`/api/appointments/${id}`, {})
       .then(() => {
-        console.log("line 69");
         const newState = { ...state, appointments }
         const coolerNewState = updateSpots(newState, newState.day)
         setState(coolerNewState)
