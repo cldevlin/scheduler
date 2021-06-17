@@ -5,7 +5,6 @@ import { prettyDOM, render, cleanup, waitForElement, fireEvent, getByAltText, ge
 
 import Application from "components/Application";
 
-// afterEach(cleanup);
 describe("Application", () => {
   it("defaults to Monday and changes the schedule when a new day is selected", async () => {
     const { getByText, debug } = render(<Application />);
@@ -63,7 +62,6 @@ describe("Application", () => {
     fireEvent.click(queryByAltText(appointment, "Delete"));
 
     // check that the confirmation message is shown
-    // debug(appointment)
     expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
 
     // click the "Confirm" button on that appointment
@@ -103,7 +101,6 @@ describe("Application", () => {
 
     // Click the first interviewer in the list.
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"))
-    // debug(appointment)
 
     // Click the "Save" button on that same appointment.
     fireEvent.click(getByText(appointment, "Save"))
@@ -146,7 +143,6 @@ describe("Application", () => {
 
     //Click close button
     fireEvent.click(getByAltText(appointment, "Close"))
-    // debug(appointment)
     //expect to return to form
     expect(getByTestId(appointment, "student-name-input")).toBeInTheDocument();
   });
@@ -165,7 +161,6 @@ describe("Application", () => {
     fireEvent.click(queryByAltText(appointment, "Delete"));
 
     // check that the confirmation message is shown
-    // debug(appointment)
     expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
 
     // click the "Confirm" button on that appointment
@@ -177,20 +172,8 @@ describe("Application", () => {
 
     //Click close button
     fireEvent.click(getByAltText(appointment, "Close"))
-    // debug(appointment)
     //expect to return to form
     expect(getByText(container, "Archie Cohen")).toBeInTheDocument();
 
   });
 })
-
-
-
-
-// function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-// return delay(1000)
-//   .then(() => {
-
-//     debug();
-//   })

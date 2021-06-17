@@ -33,7 +33,6 @@ export function getInterview(state, interviewObj) {
   if (!interviewObj) {
     return null;
   }
-  // console.log("interviewObj", interviewObj);
 
   const detailedInterviewObj = {
     ...interviewObj,
@@ -43,6 +42,5 @@ export function getInterview(state, interviewObj) {
       avatar: state.interviewers[interviewObj.interviewer].avatar
     }
   }
-  // console.log('detailedInterviewObj', detailedInterviewObj);
   return detailedInterviewObj;
 }

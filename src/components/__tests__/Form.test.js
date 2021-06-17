@@ -27,7 +27,6 @@ describe("Form", () => {
     expect(getByTestId("student-name-input")).toHaveValue("Lydia Miller-Jones");
   });
 
-  // ;
 
   it("validates that the student name is not blank", () => {
     /* 1. Create the mock onSave function */

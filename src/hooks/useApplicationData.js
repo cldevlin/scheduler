@@ -5,8 +5,8 @@ import axios from 'axios';
 export default function useApplicationData() {
   const [state, setState] = useState({
     day: "Monday",
-    days: [], // contains spots # ... to access number of spots: spots.days[n]
-    appointments: {}, // if appointments.interview === null, that is 1 free spot
+    days: [],
+    appointments: {},
     interviewers: {}
   })
 
@@ -21,7 +21,6 @@ export default function useApplicationData() {
 
     //iterate over appointments and verify if interview === null
     const emptyAppointments = appointmentIds.filter(appointmentId => state.appointments[appointmentId].interview === null)
-    //(get length)
     const spots = emptyAppointments.length;
 
     //update spots value in day
@@ -49,8 +48,6 @@ export default function useApplicationData() {
         const newState = { ...state, appointments }
         const coolerNewState = updateSpots(newState, newState.day)
         setState(coolerNewState)
-        // setState({ ...state, appointments })
-
       })
   }
 
@@ -79,7 +76,6 @@ export default function useApplicationData() {
       axios.get('/api/appointments'),
       axios.get('/api/interviewers')
     ]).then((all) => {
-      // console.log("STATE days", all[2]);
       setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     })
   }, [])

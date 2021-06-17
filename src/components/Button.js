@@ -20,6 +20,3 @@ export default function Button(props) {
       </button >
    );
 }
-
-
-// disable onClick={action("button-clicked")} 
