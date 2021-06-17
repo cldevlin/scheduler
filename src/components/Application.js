@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "components/Application.scss";
 import DayList from "components/DayList.js";
@@ -12,7 +12,7 @@ import useApplicationData from "hooks/useApplicationData";
 
 export default function Application(props) {
   const { state, setDay, bookInterview, cancelInterview } = useApplicationData();
-
+  // console.log("state.days", state.days);
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const schedule = dailyAppointments.map((appointment, index) => {
@@ -28,16 +28,9 @@ export default function Application(props) {
       />)
   })
 
-  // const dailyInterviewers = getInterviewersForDay(state, state.day);
+  useEffect(() => {
 
-
-  // const setDays = days => setState((prev) => ({ ...prev, days }));
-
-  //get days data
-
-
-
-
+  }, [state.days])
 
   return (
     <main className="layout">

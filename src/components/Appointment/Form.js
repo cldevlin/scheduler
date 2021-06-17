@@ -25,6 +25,7 @@ export default function Form(props) {
       return;
     }
 
+    setError("")
     props.onSave(name, interviewer);
   };
 
@@ -46,13 +47,16 @@ export default function Form(props) {
           />
           <section className="appointment__validation">{error}</section>
         </form>
-        <InterviewerList interviewers={props.interviewers} value={interviewer} onChange={setInterviewer} />
+        <InterviewerList
+          interviewers={props.interviewers}
+          value={interviewer}
+          onChange={setInterviewer}
+        />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button danger onClick={() => interviewer && cancel()}>Cancel</Button>
-          <Button confirm onClick={() => validate()}>Save</Button>
-          {/* to onSave we should pass more info? add time of appointment? */}
+          <Button danger onClick={cancel}>Cancel</Button>
+          <Button confirm onClick={validate}>Save</Button>
         </section>
       </section>
     </main>
