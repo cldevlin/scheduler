@@ -21,3 +21,8 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Screenshots
+!["Monday appointments"](https://github.com/cldevlin/scheduler/blob/master/docs/monday-appointments.png?raw=true)
+!["Create a new appointment"](https://github.com/cldevlin/scheduler/blob/master/docs/create-appointment.png?raw=true)
+!["Delete an appointment"](https://github.com/cldevlin/scheduler/blob/master/docs/confirm-delete.png?raw=true)
